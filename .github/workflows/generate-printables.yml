@@ -1,0 +1,43 @@
+name: Generate print-ready PDFs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'experiments/**/program.c'
+      - 'tools/generate_printables.py'
+      - '.github/workflows/generate-printables.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PDF dependencies
+        run: pip install reportlab pypdf
+
+      - name: Generate printables
+        run: python tools/generate_printables.py
+
+      - name: Commit generated PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments/*/printable.pdf S3_DSA_Lab_All_12.pdf
+          if git diff --cached --quiet; then
+            echo "Printables are already up to date."
+          else
+            git commit -m "Generate print-ready lab PDFs"
+            git push
+          fi
