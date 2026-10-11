@@ -1,83 +1,110 @@
 #include <stdio.h>
 #include <ctype.h>
+
 #define MAX 100
 
 char stack[MAX];
 int top = -1;
 
-void push(char ch) {
-    if (top == MAX - 1) {
-        printf("Stack Overflow\n");
-        return;
-    }
+void push(char ch)
+{
     stack[++top] = ch;
 }
 
-char pop(void) {
-    if (top == -1) return '\0';
+char pop()
+{
     return stack[top--];
 }
 
-char peek(void) {
-    if (top == -1) return '\0';
+char peek()
+{
     return stack[top];
 }
 
-int precedence(char op) {
-    switch (op) {
-        case '^': return 3;
-        case '*':
-        case '/': return 2;
-        case '+':
-        case '-': return 1;
-        default: return 0;
-    }
+int precedence(char ch)
+{
+    if (ch == '+' || ch == '-')
+        return 1;
+
+    if (ch == '*' || ch == '/')
+        return 2;
+
+    if (ch == '^')
+        return 3;
+
+    return 0;
 }
 
-int main(void) {
-    char infix[MAX], postfix[MAX];
-    int i, j = 0;
+void infixToPostfix(char infix[], char postfix[])
+{
+    int i = 0, j = 0;
+    char ch;
 
-    printf("Enter infix expression: ");
-    scanf("%99s", infix);
+    while (infix[i] != '\0')
+    {
+        ch = infix[i];
 
-    for (i = 0; infix[i] != '\0'; i++) {
-        char ch = infix[i];
-
-        if (isalnum((unsigned char)ch)) {
+        /* If operand, add to postfix */
+        if (isalnum(ch))
+        {
             postfix[j++] = ch;
-        } else if (ch == '(') {
-            push(ch);
-        } else if (ch == ')') {
-            while (top != -1 && peek() != '(')
-                postfix[j++] = pop();
-            if (top == -1) {
-                printf("Invalid Expression!\n");
-                return 0;
-            }
-            pop();
-        } else if (ch == '+' || ch == '-' || ch == '*' ||
-                   ch == '/' || ch == '^') {
-            while (top != -1 && peek() != '(' &&
-                  (precedence(peek()) > precedence(ch) ||
-                  (precedence(peek()) == precedence(ch) && ch != '^')))
-                postfix[j++] = pop();
-            push(ch);
-        } else {
-            printf("Invalid character: %c\n", ch);
-            return 0;
         }
+
+        /* If left parenthesis, push into stack */
+        else if (ch == '(')
+        {
+            push(ch);
+        }
+
+        /* If right parenthesis */
+        else if (ch == ')')
+        {
+            while (top != -1 && peek() != '(')
+            {
+                postfix[j++] = pop();
+            }
+
+            if (top != -1 && peek() == '(')
+                pop();
+        }
+
+        /* If operator */
+        else if (ch == '+' || ch == '-' ||
+                 ch == '*' || ch == '/' || ch == '^')
+        {
+            while (top != -1 &&
+                   peek() != '(' &&
+                   (precedence(peek()) > precedence(ch) ||
+                    (precedence(peek()) == precedence(ch) && ch != '^')))
+            {
+                postfix[j++] = pop();
+            }
+
+            push(ch);
+        }
+
+        i++;
     }
 
-    while (top != -1) {
-        if (peek() == '(') {
-            printf("Invalid Expression!\n");
-            return 0;
-        }
+    /* Pop remaining operators */
+    while (top != -1)
+    {
         postfix[j++] = pop();
     }
 
     postfix[j] = '\0';
-    printf("Postfix Expression: %s\n", postfix);
+}
+
+int main()
+{
+    char infix[MAX], postfix[MAX];
+
+    printf("Enter an infix expression: ");
+    scanf("%s", infix);
+
+    infixToPostfix(infix, postfix);
+
+    printf("Postfix expression: %s\n", postfix);
+
     return 0;
 }
