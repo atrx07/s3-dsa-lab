@@ -1,46 +1,34 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 struct Node
 {
     char data;
-    struct Node *left;
-    struct Node *right;
+    struct Node *left, *right;
 };
 
 int main()
 {
     char expr[4];
-    struct Node *root, *leftNode, *rightNode;
+    struct Node root, left, right;
 
     printf("Enter a simple arithmetic expression (e.g., a+b):\n");
     scanf("%3s", expr);
 
-    leftNode = (struct Node *)malloc(sizeof(struct Node));
-    rightNode = (struct Node *)malloc(sizeof(struct Node));
-    root = (struct Node *)malloc(sizeof(struct Node));
+    left.data = expr[0];
+    left.left = left.right = NULL;
 
-    leftNode->data = expr[0];
-    leftNode->left = NULL;
-    leftNode->right = NULL;
+    right.data = expr[2];
+    right.left = right.right = NULL;
 
-    root->data = expr[1];
-    root->left = leftNode;
-
-    rightNode->data = expr[2];
-    rightNode->left = NULL;
-    rightNode->right = NULL;
-    root->right = rightNode;
+    root.data = expr[1];
+    root.left = &left;
+    root.right = &right;
 
     printf("Prefix expression:\n");
-    printf("%c%c%c\n", root->data, root->left->data, root->right->data);
+    printf("%c%c%c\n", root.data, root.left->data, root.right->data);
 
     printf("Postfix expression:\n");
-    printf("%c%c%c\n", root->left->data, root->right->data, root->data);
-
-    free(leftNode);
-    free(rightNode);
-    free(root);
+    printf("%c%c%c\n", root.left->data, root.right->data, root.data);
 
     return 0;
 }

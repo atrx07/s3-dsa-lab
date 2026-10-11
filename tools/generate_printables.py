@@ -22,7 +22,7 @@ EXPERIMENTS = [
     ("08-quick-sort", "QUICK SORT - C PROGRAM", "Divide and Conquer", "5\n40 10 30 20 50\n"),
     ("09-prefix-postfix-traversal", "PREFIX AND POSTFIX TRAVERSAL - C PROGRAM", "Binary Expression Tree", "a+b\n"),
     ("10-binary-search", "BINARY SEARCH - C PROGRAM", "Sorted Array", "7\n2 5 8 12 16 23 38\n16\n"),
-    ("11-dfs", "DEPTH FIRST SEARCH (DFS) - C PROGRAM", "Adjacency Matrix", "5\n01100\n10010\n10011\n01101\n00110\n0\n"),
+    ("11-dfs", "DEPTH FIRST SEARCH (DFS) - C PROGRAM", "Adjacency Matrix", "5\n0 1 1 0 0\n1 0 0 1 0\n1 0 0 1 1\n0 1 1 0 1\n0 0 1 1 0\n0\n"),
     ("12-spell-checker-hashing", "SPELL CHECKER USING HASHING - C PROGRAM", "Simple Hash Table", "appl\n"),
 ]
 

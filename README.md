@@ -25,7 +25,8 @@ For convenience, all twelve printable sheets are also merged into [`S3_DSA_Lab_A
 
 ## Notes
 
-- Programs intentionally keep a simple textbook/lab style.
-- The stack program includes the underflow-return and menu-string fixes.
+- Programs intentionally use a short textbook/lab style so they are easier to study and reproduce.
 - Infix-to-postfix handles alphanumeric operands and right-associative `^` correctly.
-- DFS reads adjacency-matrix digits using `%1d`, so compact rows such as `01100` work as intended.
+- Polynomial addition using linked lists expects terms in descending exponent order with no repeated exponent inside one input polynomial.
+- DFS uses normal `%d` adjacency-matrix input; enter matrix values separated by spaces.
+- The PDF generator compiles each program and captures a representative program run before rebuilding the printables.
